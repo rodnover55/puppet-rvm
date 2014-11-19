@@ -25,6 +25,14 @@ class rvm::system(
     default => [ "http_proxy=${proxy_url}" , "https_proxy=${proxy_url}" ],
   }
 
+  exec { 'system-rvm-gpg':
+    path        => '/usr/bin:/usr/sbin:/bin',
+    command     => "/usr/bin/curl -sSL https://rvm.io/mpapis.asc | /usr/bin/gpg --import -",
+    creates     => '/usr/local/rvm/bin/rvm',
+    environment => $proxy_environment,
+    before      => Exec['system-rvm']
+  }
+
   exec { 'system-rvm':
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => "/usr/bin/curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
