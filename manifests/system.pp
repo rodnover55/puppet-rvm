@@ -29,7 +29,7 @@ class rvm::system(
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => "/usr/bin/gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3",
     environment => $proxy_environment,
-    before      => Exec['system-rvm']
+    before      => [Exec['system-rvm'], Exec['system-rvm-get']]
   }
 
   exec { 'system-rvm':
