@@ -27,8 +27,7 @@ class rvm::system(
 
   exec { 'system-rvm-gpg':
     path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "/usr/bin/curl -sSL https://rvm.io/mpapis.asc | /usr/bin/gpg --import -",
-    creates     => '/usr/local/rvm/bin/rvm',
+    command     => "/usr/bin/gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3",
     environment => $proxy_environment,
     before      => Exec['system-rvm']
   }
