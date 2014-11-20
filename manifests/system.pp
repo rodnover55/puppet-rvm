@@ -29,7 +29,7 @@ class rvm::system(
     path        => '/usr/bin:/usr/sbin:/bin',
     command     => "/usr/bin/gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3",
     environment => $proxy_environment,
-    before      => [Exec['system-rvm'], Exec['system-rvm-get']]
+    before      => [Exec['system-rvm']]
   }
 
   exec { 'system-rvm':
@@ -51,7 +51,7 @@ class rvm::system(
         command     => "rvm get ${version}",
         before      => Exec['system-rvm'], # so it doesn't run after being installed the first time
         environment => $proxy_environment,
-        require     => Notify['rvm-get_version'],
+        require     => [Exec['system-rvm-gpg'], Notify['rvm-get_version']]
       }
     }
   }
